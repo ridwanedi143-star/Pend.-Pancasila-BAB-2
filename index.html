@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Belajar Interaktif: Aku dan Teman-temanku (Pendidikan Pancasila Kelas 1)</title>
+    <!-- Loading Tailwind CSS, Google Fonts, & FontAwesome Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pancasila: {
+                            red: '#e11d48',
+                            gold: '#d97706',
+                            green: '#059669',
+                            blue: '#0284c7',
+                            dark: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        h1, h2, h3, h4, .fun-font {
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        /* Theme configurations via CSS Custom Properties mapped dynamically */
+        .theme-gold {
+            background-color: #fefbeb; /* Golden background warmth */
+            --primary-bg: linear-gradient(135deg, #f59e0b, #d97706);
+            --accent-color: #d97706;
+            --card-border: #fef08a;
+            --text-heading: #78350f;
+        }
+        .theme-playground {
+            background-color: #f0f9ff; /* Soft sky blue theme */
+            --primary-bg: linear-gradient(135deg, #38bdf8, #0284c7);
+            --accent-color: #0284c7;
+            --card-border: #bae6fd;
+            --text-heading: #0c4a6e;
+        }
+        .theme-forest {
+            background-color: #f0fdf4; /* Eco mint green theme */
+            --primary-bg: linear-gradient(135deg, #34d399, #059669);
+            --accent-color: #059669;
+            --card-border: #a7f3d0;
+            --text-heading: #064e3b;
+        }
+        .theme-space {
+            background-color: #faf5ff; /* Cosmic Indigo theme */
+            --primary-bg: linear-gradient(135deg, #a78bfa, #7c3aed);
+            --accent-color: #7c3aed;
+            --card-border: #ddd6fe;
+            --text-heading: #4c1d95;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--accent-color, #0284c7);
+            border-radius: 10px;
+            opacity: 0.7;
+        }
+
+        /* Animations */
+        @keyframes pulse-gentle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .animate-pulse-gentle {
+            animation: pulse-gentle 2.5s infinite ease-in-out;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .animate-wiggle {
+            animation: wiggle 0.6s infinite ease-in-out;
+        }
+
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            .print-card {
+                border: 1px solid #cbd5e1 !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+        }
+        .print-only {
+            display: none;
+        }
+    </style>
+</head>
+<body id="theme-root" class="theme-playground min-h-screen text-slate-800 flex flex-col justify-between selection:bg-sky-200">
+
+    <!-- Custom Modal Dialog (Safe alternative to alert() window calls) -->
+    <div id="customModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden no-print">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 text-center border-4 border-sky-400 shadow-2xl transform scale-95 transition-transform duration-300" id="modalContainer">
+            <div id="modalIcon" class="text-7xl mb-4">⭐</div>
+            <h3 id="modalTitle" class="text-2xl font-extrabold text-sky-600 mb-2">Pesan Karakter</h3>
+            <p id="modalMessage" class="text-slate-600 mb-6 font-semibold text-sm">Semangat belajar, kamu hebat!</p>
+            <button onclick="closeModal()" class="w-full bg-sky-500 hover:bg-sky-600 text-white font-extrabold py-3 px-6 rounded-2xl shadow-lg transition duration-200">Lanjutkan Petualangan 🚀</button>
+        </div>
+    </div>
+
+    <!-- Header Area and Navigation Tabs -->
+    <header class="bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 text-white shadow-xl sticky top-0 z-40 no-print" id="mainHeader">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_20%,transparent_20%)] bg-[size:12px_12px]"></div>
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+            <div class="flex items-center gap-3">
+                <div class="bg-white p-2.5 rounded-full shadow-lg text-sky-600 text-3xl animate-bounce">
+                    🇮🇩
+                </div>
+                <div>
+                    <h1 class="text-2xl md:text-3xl tracking-wide drop-shadow-md">AKU DAN TEMAN-TEMANKU</h1>
+                    <p class="text-xs md:text-sm font-bold opacity-90">Pendidikan Pancasila - Kelas 1 SD / Fase A / Semester 1</p>
+                </div>
+            </div>
+            
+            <!-- Student Profiler Card -->
+            <div class="bg-white/20 backdrop-blur-md rounded-2xl p-3 px-5 flex items-center gap-3 border border-white/30 text-sm">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-1">
+                        <span class="font-extrabold text-xs text-sky-100 uppercase tracking-wider">Siswa:</span>
+                        <input type="text" id="studentNameInput" placeholder="Ketik namamu..." class="bg-white/30 text-white placeholder-white/70 font-bold border-none rounded-lg px-2 py-0.5 focus:ring-2 focus:ring-yellow-300 outline-none w-44" oninput="updateProfileName()">
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <span class="font-extrabold text-xs text-sky-100 uppercase tracking-wider">Sekolah:</span>
+                        <input type="text" id="schoolNameInput" placeholder="Nama Sekolah..." class="bg-white/30 text-white placeholder-white/70 font-bold border-none rounded-lg px-2 py-0.5 focus:ring-2 focus:ring-yellow-300 outline-none w-44" oninput="updateProfileSchool()">
+                    </div>
+                </div>
+                <span class="text-3xl animate-pulse-gentle">🎒</span>
+            </div>
+        </div>
+
+        <!-- Navigation bar for all segments -->
+        <div class="bg-blue-700/50 backdrop-blur-sm border-t border-blue-500/30">
+            <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto gap-2 py-2 text-sm md:text-base font-bold custom-scrollbar">
+                <button onclick="switchTab('beranda')" id="tab-beranda" class="tab-btn bg-yellow-400 text-slate-900 px-4 py-2 rounded-2xl transition duration-200 flex items-center gap-2 shrink-0 shadow-sm">
+                    <i class="fa-solid fa-house"></i> Beranda
+                </button>
+                <button onclick="switchTab('materi')" id="tab-materi" class="tab-btn hover:bg-white/10 text-white px-4 py-2 rounded-2xl transition duration-200 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-compass"></i> 20 Pertemuan Modul
+                </button>
+                <button onclick="switchTab('lkpd')" id="tab-lkpd" class="tab-btn hover:bg-white/10 text-white px-4 py-2 rounded-2xl transition duration-200 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-gamepad"></i> 20 LKPD Mandiri
+                </button>
+                <button onclick="switchTab('soal')" id="tab-soal" class="tab-btn hover:bg-white/10 text-white px-4 py-2 rounded-2xl transition duration-200 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-clipboard-question"></i> Kuis Evaluasi (35 Soal)
+                </button>
+                <button onclick="switchTab('hasil')" id="tab-hasil" class="tab-btn hover:bg-white/10 text-white px-4 py-2 rounded-2xl transition duration-200 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-shield-halved"></i> Rapor & Piagam
+                </button>
+                <button onclick="switchTab('cetak-guru')" id="tab-cetak-guru" class="tab-btn hover:bg-white/10 text-white px-4 py-2 rounded-2xl transition duration-200 flex items-center gap-2 shrink-0 border border-sky-400">
+                    <i class="fa-solid fa-print"></i> Dokumen Guru
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Area -->
+    <main class="max-w-7xl w-full mx-auto p-4 flex-grow no-print">
+
+        <!-- 1. TAB BERANDA -->
+        <section id="section-beranda" class="tab-content block space-y-6">
+            <!-- Hero Dashboard Banner -->
+            <div class="bg-gradient-to-br from-indigo-100 to-sky-100 border-4 border-sky-300 rounded-3xl p-6 md:p-10 flex flex-col lg:flex-row items-center gap-8 shadow-xl relative overflow-hidden">
+                <div class="absolute right-0 top-0 opacity-10 text-[20rem] font-bold select-none pointer-events-none">⭐</div>
+                <div class="space-y-4 text-center lg:text-left flex-1 relative z-10">
+                    <span class="bg-rose-500 text-white font-extrabold py-1.5 px-4 rounded-full text-xs inline-block shadow-sm">Fase A - Kelas I SD 🤸</span>
+                    <h2 class="text-3xl md:text-5xl font-black text-sky-800 leading-tight">Pancasila itu Menyenangkan!</h2>
+                    <p class="text-base md:text-lg text-slate-700 leading-relaxed font-semibold">
+                        Halo anak-anak tangguh Indonesia! Di <strong class="text-indigo-600">Bab 1: Aku dan Teman-temanku</strong>, mari kita saling mengenal identitas diri, menghargai keberagaman ciri fisik, melatih kepatuhan aturan bermain bersama kelompok secara jujur, gotong royong, dan penuh sportivitas!
+                    </p>
+                    
+                    <!-- Dynamic Theme Customizer -->
+                    <div class="bg-white p-4 rounded-3xl border border-sky-200 inline-block space-y-2 text-left shadow-sm">
+                        <span class="text-xs font-black text-slate-500 block"><i class="fa-solid fa-palette"></i> Pilih Warna Tampilan Aplikasi:</span>
+                        <div class="flex gap-2">
+                            <button onclick="changeTheme('playground')" class="w-8 h-8 rounded-full bg-sky-400 hover:ring-4 hover:ring-sky-200 transition" title="Playground Biru"></button>
+                            <button onclick="changeTheme('gold')" class="w-8 h-8 rounded-full bg-amber-500 hover:ring-4 hover:ring-amber-200 transition" title="Garuda Emas"></button>
+                            <button onclick="changeTheme('forest')" class="w-8 h-8 rounded-full bg-emerald-500 hover:ring-4 hover:ring-emerald-200 transition" title="Hutan Tropis"></button>
+                            <button onclick="changeTheme('space')" class="w-8 h-8 rounded-full bg-indigo-500 hover:ring-4 hover:ring-indigo-200 transition" title="Luar Angkasa"></button>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex flex-wrap justify-center lg:justify-start gap-4">
+                        <button onclick="switchTab('materi')" class="bg-sky-500 hover:bg-sky-600 text-white font-extrabold px-6 py-3.5 rounded-2xl shadow-lg hover:shadow-sky-200 transition duration-200 flex items-center gap-2 transform hover:-translate-y-1">
+                            <i class="fa-solid fa-play"></i> Mulai Petualangan!
+                        </button>
+                        <button onclick="speakIntroduction()" class="bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-extrabold px-4 py-3.5 rounded-2xl shadow-md transition duration-200 flex items-center gap-2">
+                            <i class="fa-solid fa-volume-high"></i> Suara Petunjuk
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mascot Profile Card -->
+                <div class="w-full max-w-xs flex justify-center">
+                    <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-yellow-300 text-center space-y-3 relative transform -rotate-2">
+                        <span class="text-8xl block animate-bounce">🦁🌟</span>
+                        <div class="bg-sky-500 text-white font-extrabold py-1.5 px-4 rounded-xl text-xs inline-block">Kaka Garuda</div>
+                        <p class="text-xs text-slate-500 font-extrabold">"Saling menyayangi, rukun, dan bangga bersatu!"</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Learning Journey Path -->
+            <div class="space-y-4">
+                <h3 class="text-2xl font-extrabold text-slate-800 text-center">Rencana Petualangan 20 Pertemuan Pancasila 🗺️</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-3xl border-b-8 border-sky-400 shadow-md text-center space-y-2 hover:scale-105 transition">
+                        <span class="text-4xl">👦🧒</span>
+                        <h4 class="font-extrabold text-sky-600 text-sm">TP 1: Aku Istimewa</h4>
+                        <p class="text-xs text-slate-500 font-bold leading-relaxed">Materi Pertemuan 1 - 5: Mengenal identitas diri, fungsi tubuh, dan menjaga kebersihan.</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border-b-8 border-indigo-400 shadow-md text-center space-y-2 hover:scale-105 transition">
+                        <span class="text-4xl">🤝🌈</span>
+                        <h4 class="font-extrabold text-indigo-600 text-sm">TP 2: Ragam Temanku</h4>
+                        <p class="text-xs text-slate-500 font-bold leading-relaxed">Materi Pertemuan 6 - 10: Mengenal teman sekelas, jenis kelamin, dan sikap empati.</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border-b-8 border-amber-400 shadow-md text-center space-y-2 hover:scale-105 transition">
+                        <span class="text-4xl">📏🎯</span>
+                        <h4 class="font-extrabold text-amber-600 text-sm">TP 3: Aturan Bermain</h4>
+                        <p class="text-xs text-slate-500 font-bold leading-relaxed">Materi Pertemuan 11 - 15: Konsep aturan kelas, bermain tertib, engklek, dan konsekuensi.</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl border-b-8 border-emerald-400 shadow-md text-center space-y-2 hover:scale-105 transition">
+                        <span class="text-4xl">🏆🌱</span>
+                        <h4 class="font-extrabold text-emerald-600 text-sm">TP 4: Gotong Royong</h4>
+                        <p class="text-xs text-slate-500 font-bold leading-relaxed">Materi Pertemuan 16 - 20: Kerjasama tim, sikap jujur, gobak sodor, dan pohon pertemanan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. TAB MATERI AJAR LENGKAP (20 Pertemuan) -->
+        <section id="section-materi" class="tab-content hidden space-y-6">
+            <div class="bg-white p-5 rounded-3xl shadow-md border border-slate-100 flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-extrabold text-slate-800">Buku Panduan Belajar Murid (20 Pertemuan Lengkap)</h3>
+                    <p class="text-xs text-slate-500 font-bold">Silakan ketuk nomor pertemuan di bawah untuk membaca isi modul ajar Pancasila!</p>
+                </div>
+                <span class="text-4xl">📖</span>
+            </div>
+
+            <!-- Horizontal Meeting Carousel Grid Selector -->
+            <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-10 gap-2" id="meetingsGridSelector">
+                <!-- Populated via JS -->
+            </div>
+
+            <!-- Dynamic Meeting Material Panel Container -->
+            <div id="active-meeting-material-panel" class="bg-white p-6 md:p-8 rounded-3xl border-2 border-dashed shadow-md space-y-4">
+                <!-- Active meeting content injected dynamically here -->
+            </div>
+        </section>
+
+        <!-- 3. TAB LKPD INTERAKTIF (20 LKPD) -->
+        <section id="section-lkpd" class="tab-content hidden space-y-6">
+            <div class="bg-white p-5 rounded-3xl border-2 border-dashed border-sky-300 text-center space-y-2">
+                <h3 class="text-2xl font-extrabold text-slate-800">🎯 Tantangan 20 LKPD Interaktif Pancasila</h3>
+                <p class="text-xs text-slate-500 font-bold">Pilih lembar kerja harianmu di bawah dan selesaikan tantangan digitalnya!</p>
+            </div>
+
+            <!-- Carousel Grid for 20 LKPD Cards -->
+            <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-10 gap-2" id="lkpdGridSelector">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Main active LKPD Work Area Box -->
+            <div class="bg-white p-6 rounded-3xl shadow-xl border-4 border-sky-300" id="active-lkpd-workspace">
+                <!-- Dynamically swapped LKPD boxes will reside here -->
+            </div>
+        </section>
+
+        <!-- 4. TAB LATIHAN SOAL (35 Questions) -->
+        <section id="section-soal" class="tab-content hidden space-y-6">
+            <!-- Assessment Header Block -->
+            <div class="bg-gradient-to-r from-sky-100 to-indigo-100 border-2 border-sky-300 p-5 rounded-3xl text-slate-700 text-sm space-y-1 shadow-sm">
+                <p class="font-extrabold flex items-center gap-2 text-sky-800 text-base">
+                    <span>📋</span> Lembar Asesmen Sumatif Bab 1
+                </p>
+                <p class="text-xs font-bold text-slate-600">Terdiri dari 35 soal lengkap (20 Pilihan Ganda, 10 Uraian Singkat, dan 5 Soal Essay) yang disesuaikan dengan kerangka kurikulum merdeka.</p>
+            </div>
+
+            <!-- Quiz form sheet -->
+            <form id="pancasilaQuizForm" onsubmit="event.preventDefault();" class="space-y-8">
+                
+                <!-- Part A: Multiple Choice Questions (1-20) -->
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-6">
+                    <h3 class="text-xl font-bold text-sky-700 border-b pb-2 flex flex-col md:flex-row md:items-center justify-between gap-2">
+                        <span>A. Pilihan Ganda (20 Soal)</span>
+                        <span class="text-xs bg-sky-100 text-sky-800 px-3 py-1 rounded-full font-black uppercase tracking-wide">Pilih Satu Jawaban Terbaik!</span>
+                    </h3>
+                    <div id="pgQuestionsWrapper" class="space-y-6">
+                        <!-- Populated programmatically via JS -->
+                    </div>
+                </div>
+
+                <!-- Part B: Short Fill-In the Blanks (21-30) -->
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-6">
+                    <h3 class="text-xl font-bold text-amber-600 border-b pb-2 flex flex-col md:flex-row md:items-center justify-between gap-2">
+                        <span>B. Uraian Singkat (10 Soal)</span>
+                        <span class="text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-black uppercase tracking-wide">Isi dengan Tepat dan Pendek!</span>
+                    </h3>
+                    <div id="shortQuestionsWrapper" class="space-y-6">
+                        <!-- Populated programmatically via JS -->
+                    </div>
+                </div>
+
+                <!-- Part C: Essay / Analytical Section (31-35) -->
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-6">
+                    <h3 class="text-xl font-bold text-indigo-600 border-b pb-2 flex flex-col md:flex-row md:items-center justify-between gap-2">
+                        <span>C. Soal Essay (5 Soal)</span>
+                        <span class="text-xs bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full font-black uppercase tracking-wide">Tulis Penjelasan Singkatmu!</span>
+                    </h3>
+                    <div id="essayQuestionsWrapper" class="space-y-6">
+                        <!-- Populated programmatically via JS -->
+                    </div>
+                </div>
+
+                <!-- Submission block -->
+                <div class="bg-white p-6 rounded-3xl border-2 border-emerald-300 text-center space-y-4 no-print shadow-xl">
+                    <p class="text-sm font-bold text-slate-600">Pastikan semua kolom jawaban telah kamu isi dengan baik ya!</p>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <button type="button" onclick="submitExam()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold px-8 py-4 rounded-2xl shadow-lg transition duration-200 flex items-center gap-2 transform hover:-translate-y-1">
+                            <i class="fa-solid fa-square-poll-vertical"></i> Kirim Jawaban & Proses Rapor
+                        </button>
+                        <button type="button" onclick="clearQuizForm()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold px-5 py-4 rounded-2xl transition duration-200">
+                            Bersihkan Form
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- 5. TAB RAPOR & PIAGAM (Printable Certificate & Scores) -->
+        <section id="section-hasil" class="tab-content hidden space-y-6">
+            <!-- Score Overview Dashboard -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-3xl border-2 border-sky-300 shadow-xl flex flex-col justify-between space-y-4 text-center">
+                    <h3 class="text-2xl font-black text-sky-700">Nilai Rapor Akhir Siswa 🏆</h3>
+                    <div class="py-6">
+                        <span class="text-8xl font-black text-sky-500" id="finalScoreDisplay">0</span>
+                        <span class="text-2xl font-bold text-slate-400">/ 100</span>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-600 font-bold border-t pt-3">
+                        <p class="flex justify-between"><span>Pilihan Ganda (PG) Benar:</span> <span id="pgPointsCount" class="text-sky-600">0 / 20</span></p>
+                        <p class="flex justify-between"><span>Uraian Singkat Benar:</span> <span id="shortPointsCount" class="text-amber-500">0 / 10</span></p>
+                        <p class="flex justify-between"><span>Skor Poin Essay Terkalkulasi:</span> <span id="essayPointsCount" class="text-indigo-600">0 Poin</span></p>
+                    </div>
+                </div>
+
+                <!-- Dynamic Rubric input for Teachers/Parents -->
+                <div class="bg-sky-50 p-6 rounded-3xl border-2 border-sky-300 space-y-4 shadow-md text-xs">
+                    <h4 class="text-lg font-bold text-sky-800 flex items-center gap-2">
+                        <span>👩‍🏫</span> Koreksi Manual Portofolio Guru / Orang Tua:
+                    </h4>
+                    <p class="text-xs text-slate-600 font-bold leading-relaxed">
+                        Nilai tugas essay sumatif dan pencapaian 20 aktivitas LKPD membutuhkan verifikasi langsung pendamping belajar. Silakan isi bobot manual tambahan di bawah ini untuk memperbarui nilai sertifikat secara instan.
+                    </p>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block font-black text-slate-700 mb-1">Skor Jawaban Essay Siswa (Rentang 0 - 20 Poin):</label>
+                            <input type="number" id="essayManualField" min="0" max="20" value="0" oninput="liveUpdateTotalScores()" class="w-full p-2.5 rounded-xl border border-sky-300 outline-none text-center font-bold text-sm bg-white focus:ring-2 focus:ring-sky-500">
+                        </div>
+                        <div>
+                            <label class="block font-black text-slate-700 mb-1">Catatan Karakter Akhir Guru:</label>
+                            <textarea id="teacherNotesField" rows="2" placeholder="Contoh: Hebat sekali! Teruslah rukun mempraktikkan toleransi dan sikap peduli kepada sesama teman!" class="w-full p-2.5 rounded-xl border border-sky-300 bg-white focus:ring-2 focus:ring-sky-500 font-bold" oninput="syncCertificateNotes()"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Printable Piagam / Certificate Sheet -->
+            <div id="printableCertificateFrame" class="bg-white p-8 rounded-3xl border-8 border-double border-yellow-500 shadow-2xl space-y-6 text-center max-w-4xl mx-auto relative overflow-hidden">
+                <!-- Star watermarks -->
+                <div class="absolute -right-8 -bottom-8 text-slate-100 text-9xl font-black select-none pointer-events-none transform -rotate-12">P</div>
+                
+                <div class="space-y-1">
+                    <span class="text-6xl">🏆🏅</span>
+                    <h2 class="text-3xl font-black text-amber-600 tracking-widest mt-2">PIAGAM PENGHARGAAN</h2>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Sertifikat Belajar Pendidikan Pancasila</p>
+                </div>
+
+                <div class="space-y-4">
+                    <p class="text-slate-600 font-bold text-sm">Diberikan dengan penuh rasa bangga dan apresiasi kepada:</p>
+                    <div>
+                        <h4 class="text-3xl font-black text-indigo-600 underline" id="certStudentNameLabel">NAMA SISWA</h4>
+                        <p class="text-xs font-black text-slate-500 mt-1" id="certSchoolNameLabel">ASAL SEKOLAH</p>
+                    </div>
+                    <p class="text-sm font-semibold text-slate-700 max-w-lg mx-auto leading-relaxed">
+                        Atas kelulusan luar biasa menyelesaikan materi ajar, 20 portofolio LKPD interaktif mandiri, serta evaluasi sumatif komprehensif pada Modul Belajar Pancasila: <strong class="text-amber-600">Bab 1 "Aku dan Teman-temanku" (Kelas I Fase A)</strong> dengan perolehan:
+                    </p>
+                </div>
+
+                <div class="flex justify-center items-center gap-4 py-2">
+                    <div class="border-2 border-amber-400 rounded-2xl p-4 bg-amber-50 min-w-[120px]">
+                        <span class="text-[10px] font-bold text-slate-500 block">NILAI AKHIR</span>
+                        <span class="text-4xl font-black text-amber-600" id="certScoreLabel">0</span>
+                    </div>
+                    <div class="border-2 border-indigo-400 rounded-2xl p-4 bg-indigo-50 min-w-[120px]">
+                        <span class="text-[10px] font-bold text-slate-500 block">PREDIKAT KAPASITAS</span>
+                        <span class="text-lg font-black text-indigo-600" id="certPredikatLabel">CUKUP</span>
+                    </div>
+                </div>
+
+                <div class="text-xs text-slate-500 italic max-w-md mx-auto font-bold" id="certNotesLabel">
+                    "Hebat sekali! Teruslah rukun mempraktikkan toleransi dan sikap peduli kepada sesama teman!"
+                </div>
+
+                <div class="grid grid-cols-2 pt-6 text-xs text-slate-500 font-black border-t border-slate-100">
+                    <div class="space-y-6">
+                        <p>Mengetahui,<br>Kepala Sekolah / Wali Kelas I</p>
+                        <p class="underline mt-8">..................................................</p>
+                    </div>
+                    <div class="space-y-6">
+                        <p>Tanggal Kelulusan<br><span id="currentDateCertLabel">15 Juli 2026</span></p>
+                        <p class="underline mt-8">Sistem Pendidikan Digital</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Print Actions block -->
+            <div class="text-center no-print">
+                <button onclick="window.print()" class="bg-amber-500 hover:bg-amber-600 text-white font-extrabold px-8 py-3.5 rounded-2xl shadow-lg transition duration-200 inline-flex items-center gap-2 transform hover:scale-105">
+                    <i class="fa-solid fa-print"></i> Cetak Rapor & Piagam Prestasi
+                </button>
+            </div>
+        </section>
+
+        <!-- 6. TAB AREA CETAK GURU -->
+        <section id="section-cetak-guru" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h3 class="text-2xl text-sky-600 font-bold flex items-center gap-2">
+                    <span>🖨️</span> Ruang Kerja Guru (Cetak Dokumen Luring)
+                </h3>
+                <p class="text-sm text-slate-600 leading-relaxed font-bold">
+                    Silakan gunakan tombol cetak di bawah ini untuk memicu lembar dokumen cetak luring (*offline*) kertas A4 secara dinamis. Struktur layout kertas kosong untuk 35 soal sumatif telah disesuaikan dengan rapi demi menunjang asesmen konvensional di dalam kelas.
+                </p>
+
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="window.print()" class="bg-sky-500 hover:bg-sky-600 text-white font-black px-6 py-3.5 rounded-2xl shadow transition flex items-center gap-2 text-sm">
+                        <i class="fa-solid fa-print"></i> Cetak Blanko Soal Lengkap
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-inner text-center py-10 space-y-3">
+                <span class="text-5xl">📄📎</span>
+                <h4 class="font-extrabold text-slate-700">Panduan Seting Cetak Printer:</h4>
+                <p class="text-xs text-slate-500 max-w-md mx-auto font-bold leading-relaxed">
+                    Untuk hasil optimal, aktifkan pilihan <strong class="text-slate-700">"Print Background Graphics"</strong> pada kotak opsi printer dialog browser Anda agar dekorasi piagam emas dan hiasan kartun luring tercetak dengan presisi.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PRINT-ONLY DOKUMEN SALINAN (VERSI KERTAS KOSONG LURING) -->
+    <div class="print-only p-8 space-y-8" id="printOnlyLayout">
+        <div class="text-center border-b-4 border-double border-slate-800 pb-4 space-y-1">
+            <h2 class="text-2xl font-bold uppercase">Lembar Evaluasi Mandiri Siswa (Versi Cetak Luring)</h2>
+            <h3 class="text-lg font-bold">Pendidikan Pancasila Bab 1: "Aku dan Teman-temanku" - Kelas I SD</h3>
+            <p class="text-xs font-bold text-slate-500">Kurikulum Merdeka (Deep Learning)</p>
+        </div>
+
+        <!-- Metadata fields for paper based -->
+        <div class="grid grid-cols-2 gap-4 text-xs font-bold border p-4 rounded-xl">
+            <div class="space-y-1">
+                <p>Nama Siswa: ......................................................</p>
+                <p>Kelas / Fase: I (Satu) / A</p>
+            </div>
+            <div class="space-y-1">
+                <p>Nama Sekolah: ......................................................</p>
+                <p>Tanggal: ......................................................</p>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <h4 class="text-sm font-bold underline">A. Pilihan Ganda (20 Poin)</h4>
+            <p class="text-[10px] font-bold text-slate-500">Berilah tanda silang (X) pada pilihan jawaban A, B, atau C yang paling benar!</p>
+            <div id="print-pg-placeholder" class="space-y-4 text-xs">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+
+        <div style="page-break-before: always;" class="space-y-4 pt-8">
+            <h4 class="text-sm font-bold underline">B. Uraian Singkat (10 Poin)</h4>
+            <p class="text-[10px] font-bold text-slate-500">Isilah titik-titik di bawah ini dengan jawaban yang singkat dan tepat!</p>
+            <div id="print-short-placeholder" class="space-y-4 text-xs">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+
+        <div style="page-break-before: always;" class="space-y-4 pt-8">
+            <h4 class="text-sm font-bold underline">C. Soal Essay (5 Poin)</h4>
+            <p class="text-[10px] font-bold text-slate-500">Jawablah pertanyaan di bawah ini dengan lengkap dan jelas!</p>
+            <div id="print-essay-placeholder" class="space-y-4 text-xs">
+                <!-- Populated via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-slate-100 text-slate-500 py-6 text-center text-xs font-bold border-t border-slate-200 no-print">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>© 2026 Modul Ajar Kurikulum Merdeka (Deep Learning) - Kelas I SD</p>
+            <p class="opacity-75">Modul Ajar Bab 1.docx - Pembelajaran Pendidikan Pancasila: "Aku dan Teman-temanku".</p>
+        </div>
+    </footer>
+
+    <script>
+        // Database of 20 Meetings (Full user-supplied content)
+        const meetingsData = {
+            1: {
+                title: "Pertemuan 1: Halo, Ini Aku!",
+                sub: "Tata cara perkenalan sopan dan pengenalan nama",
+                p1: "Guru mendemonstrasikan cara berkenalan di depan kelas secara santun: berdiri tegak, wajah ramah tersenyum, menyapa hangat ('Halo teman-teman'), menyebutkan nama lengkap dan nama panggilan secara lantang.",
+                p2: "Murid duduk melingkar lalu menggelindingkan bola empuk secara bergiliran. Murid yang menerima bola dipandu memperkenalkan dirinya dengan percaya diri di tempat."
+            },
+            2: {
+                title: "Pertemuan 2: Karya Topi Namaku",
+                sub: "Aktivitas motorik halus menulis dan merias nama",
+                p1: "Aktivitas menyenangkan merancang 'Topi Nama' menggunakan strip kertas karton manila tebal, krayon warna-warni, serta stiker dekorasi.",
+                p2: "Murid menuliskan nama panggilan berukuran besar di tengah karton lalu menghiasinya secara kreatif dengan gambar kesukaan mereka (bintang, bunga, awan, mobil)."
+            },
+            3: {
+                title: "Pertemuan 3: Tubuhku Anugerah Tuhan",
+                sub: "Mengenal anggota tubuh utama dan kegunaannya",
+                p1: "Mempelajari bagian tubuh ciptaan Tuhan: kepala, mata, hidung, mulut, telinga, tangan, dan kaki melalui media poster bagan tubuh manusia yang berwarna.",
+                p2: "Murid diajak bermain tebak gerakan secara tangkas: menunjuk mata saat guru menyebut membaca, dan menunjuk telinga saat guru menyebut mendengar."
+            },
+            4: {
+                title: "Pertemuan 4: Aku Bisa Bersih!",
+                sub: "Pentingnya merawat dan menjaga kebersihan tubuh harian",
+                p1: "Bercerita interaktif menggunakan boneka tangan tentang pentingnya membiasakan hidup bersih agar terhindar dari kuman penyakit perut yang merugikan.",
+                p2: "Mempraktikkan langsung metode cuci tangan standar 6 langkah menggunakan sabun pada air mengalir secara berurutan dan disiplin."
+            },
+            5: {
+                title: "Pertemuan 5: Seragamku Rapi dan Keren",
+                sub: "Sikap disiplin merawat kerapian pakaian sekolah",
+                p1: "Menganalisis perbedaan gambar anak sekolah yang berpakaian rapi dibanding anak yang berpakaian acak-acakan serta kotor.",
+                p2: "Aktivitas mandiri merapikan diri sendiri: menyisir rambut, merapikan kerah, memasukkan baju ke dalam rok/celana, dan mengikat tali sepatu."
+            },
+            6: {
+                title: "Pertemuan 6: Siapa Teman di Sampingku?",
+                sub: "Menghafal nama-nama teman di ruang kelas",
+                p1: "Bermain dinamis 'Kursi Musik' di mana murid berputar mengelilingi baris kursi. Saat lagu berhenti, murid duduk dan menyapa teman di sebelahnya.",
+                p2: "Saling bersalaman erat, menatap ramah, dan bertukar nama sapaan: 'Halo teman baikku, nama saya Budi, siapa namamu?'"
+            },
+            7: {
+                title: "Pertemuan 7: Teman Laki-laki dan Perempuan",
+                sub: "Mengenal perbedaan jenis kelamin secara objektif",
+                p1: "Membahas perbedaan jenis kelamin laki-laki dan perempuan berdasarkan tanda fisik dan pakaian umum (celana pendek vs rok lipit).",
+                p2: "Guru menekankan nilai kesetaraan: baik laki-laki maupun perempuan memiliki hak belajar dan bermain bersama tanpa saling membeda-bedakan."
+            },
+            8: {
+                title: "Pertemuan 8: Indahnya Keberagaman Fisik",
+                sub: "Menghargai ciri fisik rambut, kulit, dan tinggi badan",
+                p1: "Saling mengamati keunikan ciri fisik teman sebangku secara sopan (warna kulit sawo matang, rambut lurus/keriting, tinggi badan).",
+                p2: "Menumbuhkan kesadaran toleransi tinggi dan mengutuk keras perilaku mengejek fisik (bullying/body shaming) di lingkungan sekolah."
+            },
+            9: {
+                title: "Pertemuan 9: Hobi Berbeda, Tetap Rukun",
+                sub: "Saling menghargai kesukaan atau hobi teman",
+                p1: "Mewarnai berbagai ikon kegemaran (membaca, bersepeda, menyanyi, menggambar, sepak bola) untuk dipetakan ke dalam peta hobi kelas.",
+                p2: "Menceritakan alasan menyukai hobinya dan belajar menghargai perbedaan minat kesukaan teman lain agar kelas tetap harmonis."
+            },
+            10: {
+                title: "Pertemuan 10: Aku Sayang Teman",
+                sub: "Praktik empati nyata dan tolong-menolong teman",
+                p1: "Mendengarkan cerita inspiratif tentang indahnya empati sosial dan menolong sesama makhluk yang sedang mengalami keterbatasan fisik.",
+                p2: "Simulasi bermain peran: membantu teman memungut pensil yang jatuh di kolong, atau membagikan kue bekal kepada teman yang lupa membawanya."
+            },
+            11: {
+                title: "Pertemuan 11: Mengapa Harus Ada Aturan?",
+                sub: "Mengenal arti penting dan tujuan aturan kelas bersama",
+                p1: "Memahami aturan kelas sebagai kesepakatan bersama demi menjaga keselamatan, kedamaian, serta kenyamanan seluruh warga kelas.",
+                p2: "Diskusi interaktif menyusun daftar tata tertib kelas I: mengangkat tangan sebelum berbicara dan mengembalikan mainan ke tempatnya."
+            },
+            12: {
+                title: "Pertemuan 12: Serunya Bermain dengan Aturan",
+                sub: "Simulasi membandingkan bermain tertib vs bermain kacau",
+                p1: "Bermain estafet balok kertas dalam 2 babak. Babak pertama berjalan tanpa aturan sehingga ricuh dan membahayakan keselamatan.",
+                p2: "Babak kedua dipandu aturan rapi (antre bergiliran). Hasilnya permainan berjalan menyenangkan dan selesai cepat tanpa cedera."
+            },
+            13: {
+                title: "Pertemuan 13: Melompat Bersama Engklek",
+                sub: "Praktik menaati aturan permainan tradisional",
+                p1: "Mengenal aturan permainan engklek: melompat menggunakan satu kaki secara stabil dan dilarang menginjak garis pembatas kotak.",
+                p2: "Belajar mengantre dengan sabar menunggu giliran melompat tanpa menyerobot barisan teman di depannya."
+            },
+            14: {
+                title: "Pertemuan 14: Permainan Estafet Bola Berpasangan",
+                sub: "Melatih koordinasi dan disiplin bergiliran kelompok",
+                p1: "Memindahkan bola plastik berpasangan menggunakan sendok besar berdua tanpa menyentuh bola dengan tangan secara sengaja.",
+                p2: "Melatih sikap ksatria: mengembalikan bola secara jujur ke garis awal jika bola jatuh di tengah jalan tanpa berbuat curang."
+            },
+            15: {
+                title: "Pertemuan 15: Konsekuensi yang Adil",
+                sub: "Memahami arti tanggung jawab atas pelanggaran kesepakatan",
+                p1: "Diskusi interaktif memahami makna 'Konsekuensi' sebagai dampak logis yang timbul akibat melanggar kesepakatan bersama.",
+                p2: "Menyepakati konsekuensi edukatif, misalnya mengistirahatkan pemain yang curang selama satu putaran agar merenungkan tindakannya."
+            },
+            16: {
+                title: "Pertemuan 16: Kekuatan Kerja Sama Tim",
+                sub: "Aktivitas estafet gambar kelompok luring",
+                p1: "Bermain estafet gambar kelompok secara beruntun ke belakang untuk menyusun sketsa hewan utuh tanpa boleh bersuara bising.",
+                p2: "Memahami esensi kolaborasi gotong royong: setiap goresan tangan teman saling melengkapi demi hasil akhir tim yang bagus."
+            },
+            17: {
+                title: "Pertemuan 17: Jujur Itu Juara",
+                sub: "Sikap tidak curang saat beraktivitas bersama kelompok",
+                p1: "Menelaah cerita bergambar tentang petualangan anak jujur yang bersikap ksatria mengakui kesalahannya tanpa berbohong kepada guru.",
+                p2: "Membiasakan perkataan jujur dan tidak curang demi meraih kejuaraan bermain yang berkah serta disayangi teman."
+            },
+            18: {
+                title: "Pertemuan 18: Tolong-Menolong dalam Gobak Sodor",
+                sub: "Sikap sigap membantu teman tim luring",
+                p1: "Bermain gobak sodor tradisional di lapangan terbuka sekolah dengan formasi garis penjagaan silang.",
+                p2: "Mempraktikkan cara sigap menolong anggota tim yang hampir disentuh lawan dengan menutup celah berlari lawan."
+            },
+            19: {
+                title: "Pertemuan 19: Proyek Pohon Pertemanan Pancasila",
+                sub: "Karya seni kolaboratif satu ruang kelas",
+                p1: "Membuat karya hiasan dinding sekelas: menggambar pola dedaunan hijau lalu menuliskan satu nama teman baik mereka di daun tersebut.",
+                p2: "Menempelkan seluruh daun di dahan pohon buatan di dinding kelas untuk menyimbolkan kekuatan persatuan murid kelas I."
+            },
+            20: {
+                title: "Pertemuan 20: Refleksi Akhir Bab dan Pameran Karya",
+                sub: "Asesmen sumatif akhir serta presentasi pameran",
+                p1: "Mengadakan pameran karya mini memajang Topi Nama dan Pohon Pertemanan di hadapan guru serta orang tua murid.",
+                p2: "Melakukan asesmen lisan kemampuan perkenalan diri dan melafalkan kesepakatan aturan kelas dengan lantang."
+            }
+        };
+
+        // 35 Questions Database matching Deep Learning Pancasila syllabus
+        const pgQuestions = [
+            { q: "Saat memperkenalkan diri, suara kita sebaiknya...", a: ["Berbisik sangat lirih", "Jelas dan sopan terdengar", "Berteriak marah"], c: 1 },
+            { q: "Nama panggilan di topi kertas berguna agar teman kelas...", a: ["Lebih mudah memanggil kita", "Bisa tertawa mengejek", "Menjadi takut pada kita"], c: 0 },
+            { q: "Anggota tubuh yang kita gunakan untuk melihat keindahan taman adalah...", a: ["Mata", "Telinga", "Tangan"], c: 0 },
+            { q: "Sebelum makan siang, kita wajib mencuci tangan menggunakan...", a: ["Air kolam saja", "Sabun dan air mengalir", "Minyak wangi"], c: 1 },
+            { q: "Kancing seragam sekolah yang terpasang rapi melambangkan sikap...", a: ["Pemalas", "Disiplin merawat diri", "Sombong"], c: 1 },
+            { q: "Ketika berkenalan dengan teman baru di kelas, kita sebaiknya...", a: ["Cemberut bersila", "Tersenyum ramah menjabat tangan", "Lari bersembunyi"], c: 1 },
+            { q: "Teman laki-laki dan perempuan di kelas memiliki hak belajar yang...", a: ["Berbeda-beda sekali", "Sama dan setara", "Hanya untuk yang laki-laki"], c: 1 },
+            { q: "Jika ada teman yang memiliki warna kulit berbeda, kita harus...", a: ["Tetap menghargai dan berteman rukun", "Menjauhinya diam-diam", "Mengejek warna kulitnya"], c: 0 },
+            { q: "Hobi bersepeda dan menggambar di kelas boleh berbeda, tetapi kita harus...", a: ["Saling memusuhi hobi teman", "Saling menghargai hobi teman", "Berebut krayon paksa"], c: 1 },
+            { q: "Melihat teman terjatuh di halaman sekolah, sikap terpuji kita adalah...", a: ["Menertawakannya keras-keras", "Membantu menolongnya bangkit", "Membiarkannya kesakitan"], c: 1 },
+            { q: "Aturan di dalam kelas dibuat agar suasana belajar menjadi...", a: ["Kacau dan menakutkan", "Aman, nyaman, dan tertib", "Bebas berisik sepuasnya"], c: 1 },
+            { q: "Bermain permainan kelompok tanpa aturan membuat keadaan kelas menjadi...", a: ["Sangat rapi", "Kacau dan berisiko cedera", "Cepat selesai"], c: 1 },
+            { q: "Saat mengantre bermain engklek, kita dilarang...", a: ["Sabar berdiri di barisan", "Menyerobot antrean teman", "Mendukung teman bermain"], c: 1 },
+            { q: "Ketika bola plastik jatuh saat permainan estafet, sikap jujur kita adalah...", a: ["Mengambilnya langsung ke finish", "Kembali mengulang dari start secara sportif", "Menuduh teman berbohong"], c: 1 },
+            { q: "Konsekuensi pelanggaran aturan bermain bertujuan untuk mendidik kita agar...", a: ["Menjadi pendendam", "Belajar bertanggung jawab dan tertib", "Takut bermain selamanya"], c: 1 },
+            { q: "Tugas memindahkan benda secara kelompok dapat berhasil jika seluruh anggota...", a: ["Saling bertengkar berebut", "Saling bekerja sama gotong royong", "Duduk malas membiarkan teman bekerja"], c: 1 },
+            { q: "Sikap jujur ketika beraktivitas permainan ditunjukkan dengan cara...", a: ["Menaati aturan dan tidak curang", "Menyembunyikan pelanggaran kita", "Menang dengan segala cara kotor"], c: 0 },
+            { q: "Gobak sodor adalah jenis permainan tradisional yang melatih...", a: ["Kemarahan diri", "Kerja sama dan kecepatan bergerak", "Kemalasan kelompok"], c: 1 },
+            { q: "Menempel daun nama kita di 'Pohon Pertemanan' melambangkan nilai...", a: ["Perpecahan", "Persatuan kelas yang erat", "Keserakahan"], c: 1 },
+            { q: "Bersyukur atas tubuh sehat dapat kita lakukan dengan cara...", a: ["Mengotori badan dengan sengaja", "Merawat kebersihan tubuh dengan baik", "Malas berolahraga"], c: 1 }
+        ];
+
+        const shortQuestions = [
+            { q: "Nama lengkap dan nama panggilan adalah bentuk dari... diri kita.", a: "identitas" },
+            { q: "Bagian tubuh tangan kita gunakan secara terpuji untuk menulis dan... teman.", a: "menolong" },
+            { q: "Langkah mencuci tangan yang bersih dan standar kesehatan berjumlah... langkah.", a: "6" },
+            { q: "Seragam sekolah yang rapi membuat kita merasa... saat belajar di sekolah.", a: "nyaman" },
+            { q: "Sapaan ramah kepada teman baru di kelas diucapkan dengan bahasa yang...", a: "sopan" },
+            { q: "Jenis kelamin teman sekelas kita terbagi menjadi laki-laki dan...", a: "perempuan" },
+            { q: "Toleransi terhadap perbedaan warna rambut berarti kita dilarang saling...", a: "mengejek" },
+            { q: "Menjaga kerukunan antarhobi yang berbeda adalah wujud pengamalan Pancasila sila ke-...", a: "3" },
+            { q: "Aturan di sekolah harus dipatuhi secara tertib oleh seluruh warga...", a: "sekolah" },
+            { q: "Kerja sama memindahkan balok kertas membuktikan bahwa gotong royong membuat pekerjaan terasa...", a: "ringan" }
+        ];
+
+        const essayQuestions = [
+            "Tuliskan cara memperkenalkan diri kamu di depan kelas baru secara sopan!",
+            "Sebutkan 3 bagian tubuh utama kamu beserta kegunaannya masing-masing!",
+            "Mengapa bermain bersama teman harus memiliki aturan kesepakatan bersama?",
+            "Jelaskan tindakan sportif apa yang harus kamu lakukan jika tim kamu kalah bermain gobak sodor!",
+            "Sebutkan contoh sikap saling membantu atau tolong-menolong sesama teman di sekolah!"
+        ];
+
+        // System state variables
+        let currentLKPD = 1;
+        let activeTheme = 'playground';
+        
+        // Canvas configurations for LKPD 19 & 4
+        let isDrawing = false;
+        let lkpdCanvas = {};
+
+        // Onload init sequence
+        window.onload = function() {
+            // Set date to current
+            const dateObj = new Date();
+            const formattedDate = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('currentDateCertLabel').innerText = formattedDate;
+
+            renderMeetingsSelector();
+            renderLKPDSelector();
+            showMeetingContent(1);
+            showLKPDContent(1);
+            generateQuizQuestionsHTML();
+
+            updateProfileName();
+            updateProfileSchool();
+        };
+
+        // Theme Switcher engine
+        function changeTheme(themeName) {
+            const root = document.getElementById('theme-root');
+            root.className = ''; // reset
+            root.classList.add(`theme-${themeName}`, 'min-h-screen', 'text-slate-800', 'flex', 'flex-col', 'justify-between');
+            activeTheme = themeName;
+            playClickSound();
+        }
+
+        // Speech Engine for children
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'id-ID';
+                utterance.rate = 0.95;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                showModal("Maaf", "Perangkat kamu belum mendukung pembaca suara otomatis.", "❌");
+            }
+        }
+
+        function speakIntroduction() {
+            speakText("Halo anak-anak hebat! Selamat datang di modul interaktif Pendidikan Pancasila Bab satu. Tulis namamu di pojok kanan atas ya agar kita bisa belajar bersama!");
+        }
+
+        // Synthesized sounds (No external audio dependencies)
+        function playSuccessSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContext();
+                const now = ctx.currentTime;
+                // Arpeggio chord C E G C
+                const notes = [261.63, 329.63, 392.00, 523.25];
+                notes.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.frequency.setValueAtTime(freq, now + (idx * 0.08));
+                    gain.gain.setValueAtTime(0.2, now + (idx * 0.08));
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + (idx * 0.08) + 0.35);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + (idx * 0.08));
+                    osc.stop(now + (idx * 0.08) + 0.35);
+                });
+            } catch(e) { console.log(e); }
+        }
+
+        function playWrongSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContext();
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(80, now + 0.3);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(now + 0.3);
+            } catch(e) {}
+        }
+
+        function playClickSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.frequency.setValueAtTime(600, ctx.currentTime);
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.1);
+            } catch(e) {}
+        }
+
+        // Main tab selector switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-yellow-400', 'text-slate-900', 'shadow-sm');
+                btn.classList.add('hover:bg-white/10', 'text-white');
+            });
+
+            const activeBtn = document.getElementById('tab-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('hover:bg-white/10', 'text-white');
+                activeBtn.classList.add('bg-yellow-400', 'text-slate-900', 'shadow-sm');
+            }
+
+            playClickSound();
+
+            // Re-render canvas elements safely when switching to LKPD tab
+            if (tabId === 'lkpd') {
+                setTimeout(() => {
+                    initCanvasEngine(4);
+                    initCanvasEngine(19);
+                }, 100);
+            }
+        }
+
+        // Custom Modal handlers (alert replacement)
+        function showModal(title, msg, icon = "⭐") {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = msg;
+            document.getElementById('modalIcon').innerText = icon;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+            playClickSound();
+        }
+
+        // Sync inputs with piagam layouts
+        function updateProfileName() {
+            const raw = document.getElementById('studentNameInput').value || "ANAK TANGGUH INDONESIA";
+            document.getElementById('certStudentNameLabel').innerText = raw.toUpperCase();
+        }
+
+        function updateProfileSchool() {
+            const raw = document.getElementById('schoolNameInput').value || "SD NEGERI KITA";
+            document.getElementById('certSchoolNameLabel').innerText = raw.toUpperCase();
+        }
+
+        function syncCertificateNotes() {
+            const raw = document.getElementById('teacherNotesField').value || "Sangat bangga! Teruslah rukun mempraktikkan toleransi dan gotong royong Pancasila!";
+            document.getElementById('certNotesLabel').innerText = `"${raw}"`;
+        }
+
+        // Render Carousel selector buttons
+        function renderMeetingsSelector() {
+            const wrap = document.getElementById('meetingsGridSelector');
+            wrap.innerHTML = '';
+            for (let i = 1; i <= 20; i++) {
+                wrap.innerHTML += `
+                    <button onclick="showMeetingContent(${i})" id="meet-btn-${i}" class="meet-btn shrink-0 p-2 rounded-xl border text-xs font-bold bg-white hover:bg-slate-50 transition border-slate-200">
+                        P.${i}
+                    </button>
+                `;
+            }
+        }
+
+        // Render meeting content in the board panel
+        function showMeetingContent(num) {
+            document.querySelectorAll("[id^='meet-btn-']").forEach(btn => {
+                btn.className = "meet-btn shrink-0 p-2 rounded-xl border text-xs font-bold bg-white text-slate-700 hover:bg-slate-50 transition border-slate-200";
+            });
+            const activeBtn = document.getElementById(`meet-btn-${num}`);
+            if (activeBtn) {
+                activeBtn.className = "meet-btn shrink-0 p-2 rounded-xl border text-xs font-bold bg-sky-500 text-white transition border-sky-600";
+            }
+
+            const data = meetingsData[num];
+            const wrap = document.getElementById('active-meeting-material-panel');
+            wrap.className = `bg-white p-6 rounded-3xl border-4 border-double shadow-md space-y-4 ${num <= 5 ? 'border-sky-300' : num <= 10 ? 'border-indigo-300' : num <= 15 ? 'border-amber-300' : 'border-emerald-300'}`;
+            wrap.innerHTML = `
+                <div class="flex items-center justify-between border-b pb-3 border-slate-100">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400">MODUL PERTEMUAN KE-${num}</span>
+                        <h4 class="text-lg md:text-xl font-bold text-slate-800">${data.title}</h4>
+                        <p class="text-xs font-semibold text-slate-500 italic">${data.sub}</p>
+                    </div>
+                    <button onclick="speakText('${data.title}. ${data.p1} ${data.p2}')" class="bg-slate-100 hover:bg-slate-200 p-2.5 rounded-full text-slate-700 shadow-sm transition">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+                <div class="text-xs md:text-sm leading-relaxed text-slate-600 space-y-3">
+                    <p class="font-medium">${data.p1}</p>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 font-bold text-slate-800">
+                        💡 Kegiatan Kelas: <span class="font-normal text-slate-600">${data.p2}</span>
+                    </div>
+                </div>
+            `;
+            playClickSound();
+        }
+
+        // Render LKPD Selectors
+        function renderLKPDSelector() {
+            const wrap = document.getElementById('lkpdGridSelector');
+            wrap.innerHTML = '';
+            for (let i = 1; i <= 20; i++) {
+                wrap.innerHTML += `
+                    <button onclick="showLKPDContent(${i})" id="lkpd-btn-${i}" class="lkpd-btn shrink-0 p-2 rounded-xl border text-xs font-bold bg-white hover:bg-slate-50 transition border-slate-200">
+                        LKPD ${i}
+                    </button>
+                `;
+            }
+        }
+
+        // Show active LKPD panel contents
+        function showLKPDContent(num) {
+            currentLKPD = num;
+            document.querySelectorAll("[id^='lkpd-btn-']").forEach(btn => {
+                btn.className = "lkpd-btn shrink-0 p-2 rounded-xl border text-xs font-bold bg-white text-slate-700 hover:bg-slate-50 transition border-slate-200";
+            });
+            const activeBtn = document.getElementById(`lkpd-btn-${num}`);
+            if (activeBtn) {
+                activeBtn.className = "lkpd-btn shrink-0 p-2 rounded-xl border text-xs font-bold bg-sky-500 text-white transition border-sky-600";
+            }
+
+            const workspace = document.getElementById('active-lkpd-workspace');
+            
+            // Build 20 completely distinct interactive modules based on meetings
+            let lkpdContent = '';
+            
+            switch(num) {
+                case 1:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 1</span>
+                            <h4 class="text-lg font-bold text-sky-800">Uji Perkenalan Sopan</h4>
+                            <p class="text-xs text-slate-500">Pilih kalimat perkenalan pertama yang paling sopan di bawah ini!</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(1, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">A. "Hei kamu! Namaku Budi, lihat sepedaku bagus kan!"</button>
+                                <button onclick="solveLKPD(1, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">B. "Halo teman-teman baikku, selamat pagi. Perkenalkan namaku Budi." ✅</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 2:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 2</span>
+                            <h4 class="text-lg font-bold text-sky-800">Desain Topi Nama</h4>
+                            <p class="text-xs text-slate-500">Ketik nama pendekmu di bawah, lalu pilih hiasan stiker topi favoritmu!</p>
+                            <div class="space-y-2">
+                                <input type="text" id="lkpd-topi-name" placeholder="Ketik nama kamu..." class="p-2 border rounded-xl w-full text-xs font-bold">
+                                <div class="flex gap-2 justify-center pt-2">
+                                    <button onclick="solveLKPD(2, '⭐')" class="text-2xl bg-slate-100 p-2 rounded-xl hover:bg-amber-100 transition">⭐</button>
+                                    <button onclick="solveLKPD(2, '🦁')" class="text-2xl bg-slate-100 p-2 rounded-xl hover:bg-amber-100 transition">🦁</button>
+                                    <button onclick="solveLKPD(2, '🌸')" class="text-2xl bg-slate-100 p-2 rounded-xl hover:bg-amber-100 transition">🌸</button>
+                                    <button onclick="solveLKPD(2, '⚽')" class="text-2xl bg-slate-100 p-2 rounded-xl hover:bg-amber-100 transition">⚽</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 3:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 3</span>
+                            <h4 class="text-lg font-bold text-sky-800">Fungsi Panca Indra</h4>
+                            <p class="text-xs text-slate-500">Pasangkan bagian tubuh dengan fungsinya secara tepat!</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(3, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">A. Telinga digunakan untuk melihat lukisan.</button>
+                                <button onclick="solveLKPD(3, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">B. Kaki digunakan untuk berjalan & mata untuk melihat.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 4:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between border-b pb-2">
+                                <div>
+                                    <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 4</span>
+                                    <h4 class="text-lg font-bold text-sky-800">Canvas Cuci Tangan 6 Langkah</h4>
+                                </div>
+                                <button onclick="clearCanvas(4)" class="bg-rose-100 text-rose-700 text-[10px] py-1 px-2 rounded-lg font-bold">Hapus</button>
+                            </div>
+                            <p class="text-xs text-slate-500">Gambarlah simbol bentuk lingkaran di kanvas di bawah menggunakan mouse/sentuhan jarimu sebagai tanda komitmen menjaga kebersihan tangan!</p>
+                            <div class="border-4 border-dashed border-sky-300 rounded-2xl h-44 relative bg-slate-50 overflow-hidden">
+                                <canvas id="canvas-lkpd-4" class="w-full h-full bg-transparent absolute top-0 left-0 cursor-crosshair"></canvas>
+                                <div class="absolute inset-0 flex justify-center items-center pointer-events-none text-7xl font-extrabold text-slate-200/50">👋🧼</div>
+                            </div>
+                            <button onclick="saveCanvasLKPD(4)" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold py-2 rounded-xl shadow">Simpan Gambar</button>
+                        </div>
+                    `;
+                    break;
+                case 5:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 5</span>
+                            <h4 class="text-lg font-bold text-sky-800">Checklist Seragam Rapi</h4>
+                            <p class="text-xs text-slate-500">Pilih dua kelengkapan seragam sekolah yang paling wajib dirapikan sebelum upacara bendera!</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-xs font-bold"><input type="checkbox" id="check-s1"> Dasi & Kerah Baju</label>
+                                <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-xs font-bold"><input type="checkbox" id="check-s2"> Sepatu Bertali Rapi</label>
+                            </div>
+                            <button onclick="solveLKPD(5)" class="w-full bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold py-2 rounded-xl shadow">Selesai Verifikasi</button>
+                        </div>
+                    `;
+                    break;
+                case 6:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 6</span>
+                            <h4 class="text-lg font-bold text-sky-800">Menghafal Teman Kelas</h4>
+                            <p class="text-xs text-slate-500">Tuliskan nama salah satu teman baikmu di kelas satu baru!</p>
+                            <div class="space-y-2">
+                                <input type="text" id="lkpd-friend-name" placeholder="Siapa nama temanmu?" class="p-2 border rounded-xl w-full text-xs font-bold text-center">
+                                <button onclick="solveLKPD(6)" class="w-full bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold py-2 rounded-xl shadow">Kirim Nama Sahabat</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 7:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 7</span>
+                            <h4 class="text-lg font-bold text-sky-800">Klasifikasi Laki-laki & Perempuan</h4>
+                            <p class="text-xs text-slate-500">Ibu Guru memakai rok/hijab, sedangkan Bapak Guru memakai celana. Hal ini menunjukkan keragaman jenis kelamin...</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(7, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">A. Laki-laki dan Perempuan</button>
+                                <button onclick="solveLKPD(7, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">B. Hewan darat dan air</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 8:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 8</span>
+                            <h4 class="text-lg font-bold text-sky-800">Menghargai Keberagaman Fisik</h4>
+                            <p class="text-xs text-slate-500">Jika melihat teman berambut keriting, apa yang kamu katakan secara terpuji?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(8, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">A. "Rambutmu lucu sekali, seperti mie instan." (Mengejek)</button>
+                                <button onclick="solveLKPD(8, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">B. "Wah rambutmu unik dan bagus sekali ciptaan Tuhan." (Memuji) ✅</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 9:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 9</span>
+                            <h4 class="text-lg font-bold text-sky-800">Hobi Berbeda, Tetap Rukun</h4>
+                            <p class="text-xs text-slate-500">Caca suka menggambar, sedangkan Budi suka sepak bola. Sikap toleransi yang tepat adalah...</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(9, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">A. Mengizinkan teman menyukai hobinya masing-masing dengan gembira.</button>
+                                <button onclick="solveLKPD(9, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">B. Melarang Caca menggambar di sekolah.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 10:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 10</span>
+                            <h4 class="text-lg font-bold text-sky-800">Membantu Teman Kesulitan</h4>
+                            <p class="text-xs text-slate-500">Melihat teman menjatuhkan tempat pensilnya secara tidak sengaja, tindakan terpujimu adalah...</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(10, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">A. Pura-pura tidak melihat.</button>
+                                <button onclick="solveLKPD(10, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">B. Segera membantu merapikan dan memungut pensilnya.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 11:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 11</span>
+                            <h4 class="text-lg font-bold text-sky-800">Aturan Dasar Ruang Kelas</h4>
+                            <p class="text-xs text-slate-500">Aturan kelas dibuat agar keadaan di dalam kelas menjadi...</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(11, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">A. Tenang, nyaman, dan seluruh siswa aman.</button>
+                                <button onclick="solveLKPD(11, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">B. Kacau dan siswa saling berebut.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 12:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 12</span>
+                            <h4 class="text-lg font-bold text-sky-800">Bermain Tertib vs Bermain Kacau</h4>
+                            <p class="text-xs text-slate-500">Mengapa bermain ayunan harus mengantre sesuai giliran?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(12, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">A. Agar ayunannya cepat rusak.</button>
+                                <button onclick="solveLKPD(12, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">B. Agar adil dan terhindar dari bahaya jatuh.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 13:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 13</span>
+                            <h4 class="text-lg font-bold text-sky-800">Aturan Bermain Engklek</h4>
+                            <p class="text-xs text-slate-500">Saat melompat engklek, kaki tidak boleh menyentuh...</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(13, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">A. Garis pembatas kotak permainan.</button>
+                                <button onclick="solveLKPD(13, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">B. Kertas bergambar.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 14:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 14</span>
+                            <h4 class="text-lg font-bold text-sky-800">Sportivitas Bermain Estafet</h4>
+                            <p class="text-xs text-slate-500">Bila bola jatuh saat estafet, tindakan sportif tim adalah...</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(14, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">A. Pura-pura lanjut lari ke garis finish.</button>
+                                <button onclick="solveLKPD(14, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">B. Membawa bola kembali ke start untuk diulang secara jujur.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 15:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 15</span>
+                            <h4 class="text-lg font-bold text-sky-800">Menyikapi Konsekuensi Adil</h4>
+                            <p class="text-xs text-slate-500">Apa arti penting konsekuensi bermain bagi anak yang melanggar kesepakatan?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(15, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">A. Melatih kedisiplinan dan tanggung jawab moral.</button>
+                                <button onclick="solveLKPD(15, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">B. Sebagai hukuman kejam agar musuh kalah.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 16:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 16</span>
+                            <h4 class="text-lg font-bold text-sky-800">Kekuatan Kolaborasi Gotong Royong</h4>
+                            <p class="text-xs text-slate-500">Tugas kelompok memindahkan air akan berhasil cepat jika kita saling...</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(16, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">A. Saling menyalahkan teman satu tim.</button>
+                                <button onclick="solveLKPD(16, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">B. Bekerja sama menyalurkan air secara kompak.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 17:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 17</span>
+                            <h4 class="text-lg font-bold text-sky-800">Sikap Jujur Itu Juara</h4>
+                            <p class="text-xs text-slate-500">Saat kamu tidak sengaja merusak pensil teman, tindakan ksatria kamu adalah...</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(17, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">A. Jujur mengakuinya, meminta maaf, and berjanji menggantinya.</button>
+                                <button onclick="solveLKPD(17, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">B. Menyembunyikannya di tas teman lain agar aman.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 18:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 18</span>
+                            <h4 class="text-lg font-bold text-sky-800">Menolong Teman Gobak Sodor</h4>
+                            <p class="text-xs text-slate-500">Bagaimana caramu membantu teman satu tim yang hampir disentuh lawan dalam Gobak Sodor?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                                <button onclick="solveLKPD(18, true)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:border-emerald-300 text-left transition">A. Sigap menutup celah lari lawan sesuai garis aman.</button>
+                                <button onclick="solveLKPD(18, false)" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold text-slate-700 hover:bg-rose-50 hover:border-rose-300 text-left transition">B. Mendorong badan lawan hingga terjatuh keras.</button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 19:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between border-b pb-2">
+                                <div>
+                                    <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 19</span>
+                                    <h4 class="text-lg font-bold text-sky-800">Canvas Gambar Pohon Pertemanan</h4>
+                                </div>
+                                <button onclick="clearCanvas(19)" class="bg-rose-100 text-rose-700 text-[10px] py-1 px-2 rounded-lg font-bold">Hapus</button>
+                            </div>
+                            <p class="text-xs text-slate-500">Gambarlah sebuah daun hijau sebagai simbol kontribusi karya kolaborasi kelas mu!</p>
+                            <div class="border-4 border-dashed border-emerald-300 rounded-2xl h-44 relative bg-slate-50 overflow-hidden">
+                                <canvas id="canvas-lkpd-19" class="w-full h-full bg-transparent absolute top-0 left-0 cursor-crosshair"></canvas>
+                                <div class="absolute inset-0 flex justify-center items-center pointer-events-none text-7xl font-extrabold text-slate-200/50">🌳🍃</div>
+                            </div>
+                            <button onclick="saveCanvasLKPD(19)" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold py-2 rounded-xl shadow">Simpan Karya Daun</button>
+                        </div>
+                    `;
+                    break;
+                case 20:
+                    lkpdContent = `
+                        <div class="space-y-3">
+                            <span class="bg-sky-500 text-white font-bold py-1 px-3 rounded-full text-[10px]">LKPD Pertemuan 20</span>
+                            <h4 class="text-lg font-bold text-sky-800">Refleksi Pancasila Karakter</h4>
+                            <p class="text-xs text-slate-500">Berikan bintang kepuasan belajarmu selama mengikuti seluruh petualangan Bab 1!</p>
+                            <div class="flex gap-2 justify-center py-2">
+                                <button onclick="solveLKPD(20, 1)" class="text-3xl bg-slate-100 p-2 rounded-xl hover:bg-yellow-100 transition">⭐</button>
+                                <button onclick="solveLKPD(20, 2)" class="text-3xl bg-slate-100 p-2 rounded-xl hover:bg-yellow-100 transition">⭐⭐</button>
+                                <button onclick="solveLKPD(20, 3)" class="text-3xl bg-slate-100 p-2 rounded-xl hover:bg-yellow-100 transition">⭐⭐⭐</button>
+                                <button onclick="solveLKPD(20, 4)" class="text-3xl bg-slate-100 p-2 rounded-xl hover:bg-yellow-100 transition">⭐⭐⭐⭐</button>
+                            </div>
+                            <div id="lkpd20-feedback" class="text-xs font-bold text-emerald-600 text-center">Belum Memilih Bintang</div>
+                        </div>
+                    `;
+                    break;
+            }
+
+            workspace.innerHTML = lkpdContent;
+            playClickSound();
+
+            // Auto-initialize canvases on swap
+            if (num === 4 || num === 19) {
+                setTimeout(() => initCanvasEngine(num), 50);
+            }
+        }
+
+        // Canvas drawing controller (supports desktop + touch devices)
+        function initCanvasEngine(id) {
+            const canvas = document.getElementById(`canvas-lkpd-${id}`);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            lkpdCanvas[id] = { canvas, ctx };
+
+            // Resize based on wrapper parent
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            ctx.lineWidth = 6;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = id === 4 ? '#0284c7' : '#059669'; // Blue/Green pencil strokes
+
+            // Mouse events
+            canvas.addEventListener('mousedown', (e) => startStroke(e, id));
+            canvas.addEventListener('mousemove', (e) => drawStroke(e, id));
+            canvas.addEventListener('mouseup', () => stopStroke());
+            canvas.addEventListener('mouseout', () => stopStroke());
+
+            // Mobile touchscreen event wrappers
+            canvas.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousedown', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }, { passive: true });
+
+            canvas.addEventListener('touchmove', (e) => {
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            }, { passive: true });
+
+            canvas.addEventListener('touchend', () => {
+                const mouseEvent = new MouseEvent('mouseup', {});
+                canvas.dispatchEvent(mouseEvent);
+            }, { passive: true });
+        }
+
+        function startStroke(e, id) {
+            isDrawing = true;
+            const obj = lkpdCanvas[id];
+            const rect = obj.canvas.getBoundingClientRect();
+            obj.ctx.beginPath();
+            obj.ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function drawStroke(e, id) {
+            if (!isDrawing) return;
+            const obj = lkpdCanvas[id];
+            const rect = obj.canvas.getBoundingClientRect();
+            obj.ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            obj.ctx.stroke();
+        }
+
+        function stopStroke() {
+            isDrawing = false;
+        }
+
+        function clearCanvas(id) {
+            const obj = lkpdCanvas[id];
+            if (obj) {
+                obj.ctx.clearRect(0, 0, obj.canvas.width, obj.canvas.height);
+                playClickSound();
+            }
+        }
+
+        function saveCanvasLKPD(id) {
+            playSuccessSound();
+            showModal("Hasil Karya Tersimpan!", `Gambar kontribusi digital LKPD ${id} kamu telah disimpan ke pangkalan portofolio kelas.`, "🎨");
+        }
+
+        // Solve logic check for interactive LKPD questions
+        function solveLKPD(id, result) {
+            if (id === 1 || id === 3 || id === 7 || id === 8 || id === 9 || id === 10 || id === 11 || id === 12 || id === 13 || id === 14 || id === 15 || id === 16 || id === 17 || id === 18) {
+                if (result === true) {
+                    playSuccessSound();
+                    showModal("Jawaban Benar! 🎉", "Selamat! Pemahaman sikap Pancasila kamu sangat tepat dan terpuji!", "🏆");
+                } else {
+                    playWrongSound();
+                    showModal("Aduh, Belum Tepat", "Cobalah renungkan sikap terbaik yang mendatangkan kerukunan bersama teman.", "❌");
+                }
+            } 
+            else if (id === 2) {
+                const topiName = document.getElementById('lkpd-topi-name').value;
+                if (!topiName) {
+                    playWrongSound();
+                    showModal("Peringatan", "Silakan ketik nama kamu terlebih dahulu ya!", "💡");
+                    return;
+                }
+                playSuccessSound();
+                showModal("Desain Topi Sukses!", `Topi Nama kamu bertuliskan [${topiName}] berhias stiker [${result}] telah berhasil dirancang!`, "👑");
+            } 
+            else if (id === 5) {
+                const check1 = document.getElementById('check-s1').checked;
+                const check2 = document.getElementById('check-s2').checked;
+                if (check1 && check2) {
+                    playSuccessSound();
+                    showModal("Hebat, Anak Rapi! ⭐", "Kedua kriteria kelengkapan seragam sekolah dasar telah berhasil diverifikasi rapi!", "👔");
+                } else {
+                    playWrongSound();
+                    showModal("Belum Lengkap", "Centang kedua pilihan checklist untuk merapikan seluruh seragam sekolah.", "❌");
+                }
+            } 
+            else if (id === 6) {
+                const nameInput = document.getElementById('lkpd-friend-name').value;
+                if (nameInput) {
+                    playSuccessSound();
+                    showModal("Sahabat Sejati!", `Nama sahabat baikmu [${nameInput}] telah tercatat secara resmi di Pohon Kerukunan kelas!`, "💖");
+                } else {
+                    playWrongSound();
+                    showModal("Kosong", "Tulis nama sahabatmu di kolom terlebih dahulu.", "💡");
+                }
+            }
+            else if (id === 20) {
+                playSuccessSound();
+                document.getElementById('lkpd20-feedback').innerText = `Kamu memberikan penilaian ${result} Bintang! Terima kasih!`;
+                showModal("Evaluasi Sukses!", "Selamat! Kamu telah merampungkan seluruh 20 rangkaian LKPD Pancasila mandiri!", "🏆");
+            }
+        }
+
+        // Programmatic dynamic injection of all 35 evaluation questions
+        function generateQuizQuestionsHTML() {
+            const pgWrapper = document.getElementById('pgQuestionsWrapper');
+            const shortWrapper = document.getElementById('shortQuestionsWrapper');
+            const essayWrapper = document.getElementById('essayQuestionsWrapper');
+
+            const printPg = document.getElementById('print-pg-placeholder');
+            const printShort = document.getElementById('print-short-placeholder');
+            const printEssay = document.getElementById('print-essay-placeholder');
+
+            // Reset placeholders
+            pgWrapper.innerHTML = '';
+            shortWrapper.innerHTML = '';
+            essayWrapper.innerHTML = '';
+            printPg.innerHTML = '';
+            printShort.innerHTML = '';
+            printEssay.innerHTML = '';
+
+            // Inject Multiple Choice Part (1-20)
+            pgQuestions.forEach((item, idx) => {
+                const num = idx + 1;
+                pgWrapper.innerHTML += `
+                    <div class="space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                        <p class="font-bold text-slate-700 flex items-start gap-2">
+                            <span class="bg-sky-500 text-white rounded-lg px-2.5 py-0.5 text-[10px] shrink-0">${num}</span>
+                            <span>${item.q}</span>
+                            <button type="button" onclick="speakText('${item.q}')" class="text-[10px] text-blue-500 hover:text-blue-600 shrink-0"><i class="fa-solid fa-volume-high"></i></button>
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 pt-1">
+                            ${item.a.map((opt, optIdx) => `
+                                <label class="flex items-center gap-2 p-2 bg-white rounded-xl border border-slate-200 cursor-pointer hover:bg-sky-50 transition">
+                                    <input type="radio" name="pg-quest-${num}" value="${optIdx}" class="w-4 h-4 text-sky-500 focus:ring-sky-400">
+                                    <span class="font-semibold text-slate-700">${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+
+                printPg.innerHTML += `
+                    <div class="space-y-1 print-card p-3 rounded-lg">
+                        <p class="font-bold">${num}. ${item.q}</p>
+                        <p class="pl-4">A. ${item.a[0]}</p>
+                        <p class="pl-4">B. ${item.a[1]}</p>
+                        <p class="pl-4">C. ${item.a[2]}</p>
+                    </div>
+                `;
+            });
+
+            // Inject Short Answer Part (21-30)
+            shortQuestions.forEach((item, idx) => {
+                const num = idx + 21;
+                shortWrapper.innerHTML += `
+                    <div class="space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                        <p class="font-bold text-slate-700 flex items-start gap-2">
+                            <span class="bg-amber-500 text-white rounded-lg px-2.5 py-0.5 text-[10px] shrink-0">${num}</span>
+                            <span>${item.q}</span>
+                        </p>
+                        <input type="text" name="short-quest-${num}" placeholder="Tulis jawaban singkat di sini..." class="w-full md:w-1/2 p-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-amber-400 font-semibold text-xs">
+                    </div>
+                `;
+
+                printShort.innerHTML += `
+                    <div class="space-y-1 print-card p-3 rounded-lg">
+                        <p class="font-bold">${num}. ${item.q}</p>
+                        <p class="italic text-slate-400">Jawaban: ......................................................</p>
+                    </div>
+                `;
+            });
+
+            // Inject Essay Part (31-35)
+            essayQuestions.forEach((item, idx) => {
+                const num = idx + 31;
+                essayWrapper.innerHTML += `
+                    <div class="space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs">
+                        <p class="font-bold text-slate-700 flex items-start gap-2">
+                            <span class="bg-indigo-500 text-white rounded-lg px-2.5 py-0.5 text-[10px] shrink-0">${num}</span>
+                            <span>${item}</span>
+                        </p>
+                        <textarea name="essay-quest-${num}" rows="3" placeholder="Tulis penjelasan lengkap kamu di sini..." class="w-full p-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-indigo-400 font-semibold text-xs"></textarea>
+                    </div>
+                `;
+
+                printEssay.innerHTML += `
+                    <div class="space-y-1 print-card p-3 rounded-lg pb-8">
+                        <p class="font-bold">${num}. ${item}</p>
+                        <p class="italic text-slate-400">Jawab: ....................................................................................................................................</p>
+                        <p class="italic text-slate-400">.............................................................................................................................................</p>
+                    </div>
+                `;
+            });
+        }
+
+        // Scoring calculation system for 35 questions
+        function submitExam() {
+            let pgCorrect = 0;
+            let shortCorrect = 0;
+
+            // 1. Grade Multiple Choice (1-20)
+            pgQuestions.forEach((item, idx) => {
+                const num = idx + 1;
+                const radios = document.getElementsByName(`pg-quest-${num}`);
+                let chosen = null;
+                for (const r of radios) {
+                    if (r.checked) {
+                        chosen = parseInt(r.value);
+                        break;
+                    }
+                }
+                if (chosen !== null && chosen === item.c) {
+                    pgCorrect++;
+                }
+            });
+
+            // 2. Grade Short Answers (21-30)
+            shortQuestions.forEach((item, idx) => {
+                const num = idx + 21;
+                const field = document.getElementsByName(`short-quest-${num}`)[0];
+                const val = field ? field.value.trim().toLowerCase() : "";
+                if (val && val === item.a.toLowerCase()) {
+                    shortCorrect++;
+                }
+            });
+
+            // Update result labels
+            document.getElementById('pgPointsCount').innerText = `${pgCorrect} / 20`;
+            document.getElementById('shortPointsCount').innerText = `${shortCorrect} / 10`;
+
+            const pgPoin = pgCorrect * 3;     // Max 60 Poin
+            const shortPoin = shortCorrect * 2; // Max 20 Poin
+            const essayPoin = parseInt(document.getElementById('essayManualField').value) || 0; // Max 20 Poin
+
+            const totalScore = pgPoin + shortPoin + essayPoin;
+
+            // Update global dashboard views
+            document.getElementById('finalScoreDisplay').innerText = totalScore;
+            document.getElementById('certScoreLabel').innerText = totalScore;
+
+            // Set predikat
+            let predikat = "CUKUP";
+            if (totalScore >= 85) predikat = "ISTIMEWA ⭐";
+            else if (totalScore >= 70) predikat = "BAGUS";
+            else if (totalScore >= 50) predikat = "CUKUP";
+            else predikat = "PERLU BELAJAR";
+
+            document.getElementById('certPredikatLabel').innerText = predikat;
+
+            playSuccessSound();
+            showModal("Asesmen Selesai!", `Lembar kuis terkumpul! Kamu mendapatkan nilai awal ${totalScore}. Silakan periksa piagam kelulusan di halaman berikutnya.`, "🏆");
+
+            switchTab('hasil');
+        }
+
+        // Real-time scores calculations on manual grading modifications
+        function liveUpdateTotalScores() {
+            const pgCorrect = parseInt(document.getElementById('pgPointsCount').innerText.split('/')[0]) || 0;
+            const shortCorrect = parseInt(document.getElementById('shortPointsCount').innerText.split('/')[0]) || 0;
+            const essayPoin = parseInt(document.getElementById('essayManualField').value) || 0;
+
+            const totalScore = (pgCorrect * 3) + (shortCorrect * 2) + essayPoin;
+
+            document.getElementById('finalScoreDisplay').innerText = totalScore;
+            document.getElementById('certScoreLabel').innerText = totalScore;
+            document.getElementById('essayPointsCount').innerText = `${essayPoin} Poin`;
+
+            let predikat = "CUKUP";
+            if (totalScore >= 85) predikat = "ISTIMEWA ⭐";
+            else if (totalScore >= 70) predikat = "BAGUS";
+            else if (totalScore >= 50) predikat = "CUKUP";
+            else predikat = "PERLU BELAJAR";
+
+            document.getElementById('certPredikatLabel').innerText = predikat;
+        }
+
+        function clearQuizForm() {
+            document.getElementById('pancasilaQuizForm').reset();
+            playClickSound();
+            showModal("Terhapus", "Seluruh jawaban kuis sumatif luring berhasil dibersihkan kembali.", "🧼");
+        }
+    </script>
+</body>
+</html>
+```
+eof
+
+### Deskripsi Tambahan Pembaruan Bab 1:
+1. **Penyelarasan Tipografi & Font Ceria**: Kode ini sepenuhnya menggunakan Google Fonts `'Fredoka One'` untuk elemen judul utama aplikasi (`h1`, `h2`, `h3`, `h4`, `.fun-font`) sehingga visualisasi interaksi tampak serasi dan ramah anak.
+2. **Tab Navigasi Baru**: Skema warna navigasi tab kami perbarui agar menggunakan warna kuning cerah (`bg-yellow-400 text-slate-900`) ketika sedang aktif, memberikan kontras visual terbaik.
+3. **Optimasi Beranda**: Banner utama di dashboard beranda dilengkapi ornamen estetis interaktif, mascot *Kaka Garuda* interaktif, serta petunjuk suara bawaan yang mempermudah navigasi kelas I Sekolah Dasar.
